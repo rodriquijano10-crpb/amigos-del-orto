@@ -226,55 +226,44 @@ input[type="number"],
 /* ======================= */
 /* AJUSTES RESPONSIVE     */
 /* ======================= */
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   body {
-    align-items: flex-start;
-    padding-top: 20px;
     height: auto;
+    padding: 10px 0;
+    align-items: flex-start;
   }
 
   #container {
     max-width: 100%;
     margin: 0 10px;
     padding: 16px;
+    border-radius: 8px;
   }
 
-  h1,
+  h1 {
+    font-size: 1.5rem;
+  }
+
   #titulo-sacar-carta {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     padding: 6px;
-    margin-bottom: 12px;
-  }
-
-  #modoSelector label {
-    display: block;
-    margin: 6px 0;
-    font-size: 0.95rem;
   }
 
   input[type="number"],
   #nombresContainer input {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  #btnConfirmar,
-  #nombresContainer button,
-  .botones-juego button,
-  #votosContainer button,
-  #result button {
-    padding: 10px 16px;
-    font-size: 14px;
+    width: 100%;
+    font-size: 15px;
+    padding: 8px;
   }
 
   .mazo-container {
-    width: 200px;
-    height: 300px;
-    margin-top: 10px;
+    width: 180px;
+    height: 270px;
+    margin: 16px auto;
   }
 
   .dorso-texto {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .categoria {
@@ -283,19 +272,29 @@ input[type="number"],
 
   .texto {
     font-size: 14px;
-    padding: 10px;
+    padding: 0 5px;
+  }
+
+  #votosContainer button {
+    padding: 6px 10px;
+    font-size: 14px;
   }
 
   #contador {
     font-size: 14px;
+    margin-bottom: 10px;
   }
 
-  #votosContainer {
-    margin-top: 12px;
+  .botones-juego button,
+  #btnConfirmar,
+  #nombresContainer button,
+  #result button {
+    font-size: 14px;
+    padding: 8px 16px;
   }
 
-  #result #ganador {
-    font-size: 16px;
+  #result ol {
+    font-size: 14px;
   }
 }
 
