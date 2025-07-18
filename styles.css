@@ -25,9 +25,10 @@ body {
 
 h1 {
   font-size: 2.2rem;
-  color: #53B3F3;
+  color: #FFFFFF;
   margin-bottom: 20px;
   font-weight: 700;
+  text-decoration: underline;
 }
 
 .mazo-container {
