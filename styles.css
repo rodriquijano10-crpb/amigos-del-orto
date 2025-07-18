@@ -1,21 +1,21 @@
 body {
-  background: url('fondo-madera.png') top center / cover no-repeat;
   margin: 0;
+  padding: 0;
   font-family: 'Poppins', sans-serif;
   color: #fff;
-  min-height: 100dvh; /* usa altura dinámica real */
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden; /* 👈 Esto evita scroll horizontal */
 }
 
 #container {
-  width: 100%;
-  max-width: 450px;
-  padding: 20px;
+  margin: 0 auto;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
   text-align: center;
   background: rgba(0,0,0,0.6);
   border-radius: 12px;
@@ -227,12 +227,18 @@ input[type="number"],
 /* ======================= */
 /* AJUSTES RESPONSIVE     */
 /* ======================= */
-@media (max-width: 500px) {
-  body {
-    height: auto;
-    padding: 10px 0;
-    align-items: flex-start;
+@media (max-width: 768px) {
+  #container {
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    padding: 16px;
   }
+
+  body {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
 
   #container {
     max-width: 100%;
