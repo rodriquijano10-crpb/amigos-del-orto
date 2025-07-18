@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Amigos del Orto</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="container">
@@ -13,25 +13,25 @@
     <div id="setup">
       <h1>Eligí un modo</h1>
       <div id="modoSelector">
-        <label><input type="radio" name="modo" value="completo" checked> Mazo completo</label>
-        <label><input type="radio" name="modo" value="cortado"> Mazo cortado (50 cartas)</label>
+        <label><input type="radio" name="modo" value="completo" checked /> Mazo completo</label>
+        <label><input type="radio" name="modo" value="cortado" /> Mazo cortado (50 cartas)</label>
       </div>
       <h1>¿Cuántos jugadores son?</h1>
-      <input type="number" id="numJugadores" min="2" placeholder="Ej: 4">
+      <input type="number" id="numJugadores" min="2" placeholder="Ej: 4" />
       <button id="btnConfirmar" onclick="crearFormNombres()">Confirmar</button>
       <div id="nombresContainer"></div>
     </div>
 
     <!-- JUEGO -->
-    <div id="app" style="display:none;">
+    <div id="app" style="display: none">
       <h1 id="titulo-sacar-carta">SACÁ UNA CARTA Y VOTA A TU AMIGO DEL ORTO</h1>
 
       <!-- Audios -->
-      <audio id="flipSound"  preload="auto" src="flip.mp3"></audio>
+      <audio id="flipSound" preload="auto" src="flip.mp3"></audio>
       <audio id="slideSound" preload="auto" src="slide.mp3"></audio>
-      <audio id="passSound"  preload="auto" src="pass.mp3"></audio>
-      <audio id="endSound"   preload="auto" src="end.mp3"></audio>
-      <audio id="dealSound"  preload="auto" src="deal.mp3"></audio>
+      <audio id="passSound" preload="auto" src="pass.mp3"></audio>
+      <audio id="endSound" preload="auto" src="end.mp3"></audio>
+      <audio id="dealSound" preload="auto" src="deal.mp3"></audio>
 
       <div class="mazo-container">
         <div class="mazo-back" id="mazoBack">
@@ -51,19 +51,20 @@
       <div id="votosContainer"></div>
       <p id="contador">Cartas restantes: 0</p>
       <div class="botones-juego">
-        <button id="boton-anterior" onclick="anteriorCarta()" style="display:none;">Anterior carta</button>
+        <button id="boton-anterior" onclick="anteriorCarta()" style="display: none">Anterior carta</button>
         <button id="boton-finalizar" onclick="finalizarJuego()">Finalizar</button>
       </div>
     </div>
 
     <!-- RESULTADO -->
-    <div id="result" style="display:none;">
+    <div id="result" style="display: none">
       <h1>¡Fin del juego!</h1>
       <div id="ganador"></div>
-      <button onclick="reiniciarJuego()">Jugar de nuevo</button>
+      <button>Jugar de nuevo</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
