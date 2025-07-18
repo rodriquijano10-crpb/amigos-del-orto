@@ -1,4 +1,4 @@
-// 100 preguntas: 20 de cada categoría, con etiqueta y clase
+// 100 preguntas: 20 por categoría
 const ridiculas = [
   "¿Quién sería el más probable en casarse solo por los regalos?",
   "¿Quién terminaría en el noticiero por algo insólito?",
@@ -114,99 +114,157 @@ const random = [
   "¿Quién usaría Crocs en una gala sin dudarlo?"
 ];
 
-let mazo = [],
-    juegoIniciado = false,
-    currentIndex = -1,
-    cartaRevelada = false;
+// Estado global
+let jugadores     = [];
+let mazo          = [];
+let modoJuego     = 'completo';
+let currentIndex  = -1;
+let cartaRevelada = false;
 
+// 1) Crear formulario de nombres
+function crearFormNombres() {
+  modoJuego = document.querySelector('input[name="modo"]:checked').value;
+  const n = parseInt(document.getElementById('numJugadores').value);
+  if (!n || n < 2) return alert('Poné al menos 2 jugadores');
+  jugadores = [];
+  const cont = document.getElementById('nombresContainer');
+  cont.innerHTML = '';
+  for (let i = 1; i <= n; i++) {
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.id = `jugador${i}`;
+    inp.placeholder = `Jugador ${i}`;
+    cont.appendChild(inp);
+  }
+  const btn = document.createElement('button');
+  btn.textContent = 'Comenzar';
+  btn.onclick = iniciarSetup;
+  cont.appendChild(btn);
+}
+
+// 2) Leer nombres y arrancar
+function iniciarSetup() {
+  const inputs = document.querySelectorAll('#nombresContainer input');
+  for (let inp of inputs) {
+    const name = inp.value.trim();
+    if (!name) return alert('Completá todos los nombres');
+    jugadores.push({ name, score: 0 });
+  }
+  document.getElementById('setup').style.display = 'none';
+  // quitar background del container mientras juegas
+  document.getElementById('container').style.background = 'none';
+  document.getElementById('app').style.display   = 'block';
+  document.getElementById('mazoBack').classList.add('mover-izq');
+  iniciarMazo();
+  iniciarJuego();
+}
+
+// 3) Barajar y ajustar mazo
 function iniciarMazo() {
   mazo = [
     ...ridiculas.map(t => ({ texto: t, categoria: 'Ridícula', catClass: 'ridicula' })),
-    ...cachondas.map(t => ({ texto: t, categoria: 'Picante',   catClass: 'picante'   })),
-    ...oscuras.map(   t => ({ texto: t, categoria: 'Turbia',    catClass: 'turbia'    })),  
-    ...psicologicas.map(t=> ({ texto: t, categoria: 'Mental',    catClass: 'mental'    })),  
-    ...random.map(    t => ({ texto: t, categoria: 'Random',    catClass: 'random'    }))
+    ...cachondas.map(t => ({ texto: t, categoria: 'Picante', catClass: 'picante' })),
+    ...oscuras.map(t    => ({ texto: t, categoria: 'Turbia',  catClass: 'turbia' })),
+    ...psicologicas.map(t=> ({ texto: t, categoria: 'Mental',  catClass: 'mental' })),
+    ...random.map(t     => ({ texto: t, categoria: 'Random',  catClass: 'random' }))
   ].sort(() => Math.random() - 0.5);
 
+  if (modoJuego === 'cortado') mazo = mazo.slice(0,50);
+
   currentIndex = -1;
-  document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length}`;
+  document.getElementById('contador').innerText       = `Cartas restantes: ${mazo.length}`;
+  document.getElementById('votosContainer').innerHTML = '';
+  document.getElementById('boton-anterior').style.display = 'none';
 }
 
+// 4) Arrancar
 function iniciarJuego() {
-  iniciarMazo(); juegoIniciado = true; cartaRevelada = false;  
-  const cartaDiv     = document.getElementById("carta");  
-  const contenidoDiv = document.getElementById("contenido-carta");  
-  const textoDiv     = document.getElementById("texto-carta");  
-  const categoriaDiv = document.getElementById("categoria-carta");  
-  const mazoBack     = document.getElementById("mazoBack");  
-  const botonInit    = document.getElementById("boton-inicio");  
-  const botonPrev    = document.getElementById("boton-anterior");
-
-  mazoBack.classList.add("mover-izq");  
-  contenidoDiv.classList.remove("mostrar"); textoDiv.innerText = ""; categoriaDiv.innerText = "";  
-  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth;  
-
-  currentIndex = 0;  
-  const carta = mazo[currentIndex];  
-  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
-  textoDiv.innerText     = carta.texto; cartaDiv.classList.add("entrada-zoom");  
-
-  botonInit.style.display = "none"; botonPrev.style.display = "none";  
+  cartaRevelada = false;
+  siguienteCarta();
 }
 
-function cardClick() {  
-  if (!juegoIniciado) return;  
-  const contenidoDiv = document.getElementById("contenido-carta");  
-  if (!cartaRevelada) {  
-    document.getElementById("flipSound").play(); contenidoDiv.classList.add("mostrar");  
-    cartaRevelada = true; document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";  
-  } else siguienteCarta();  
+// 5) Click carta
+function cardClick() {
+  if (cartaRevelada) return;
+  document.getElementById('flipSound').play();
+  document.getElementById('contenido-carta').classList.add('mostrar');
+  cartaRevelada = true;
+  document.getElementById('boton-anterior').style.display = currentIndex > 0 ? 'inline-block' : 'none';
+  renderVotacion();
 }
 
-function siguienteCarta() {  
-  if (!juegoIniciado) return;  
-  const cartaDiv     = document.getElementById("carta");  
-  const contenidoDiv = document.getElementById("contenido-carta");  
-  const textoDiv     = document.getElementById("texto-carta");  
-  const categoriaDiv = document.getElementById("categoria-carta");  
-  const mazoBack     = document.getElementById("mazoBack");  
-  const botonInit    = document.getElementById("boton-inicio");  
-  const botonPrev    = document.getElementById("boton-anterior");
+// 6) Siguiente carta
+function siguienteCarta() {
+  const cartaDiv     = document.getElementById('carta');
+  const contenidoDiv = document.getElementById('contenido-carta');
+  const textoDiv     = document.getElementById('texto-carta');
+  const categoriaDiv = document.getElementById('categoria-carta');
+  const botonPrev    = document.getElementById('boton-anterior');
 
-  contenidoDiv.classList.remove("mostrar");  
-  cartaDiv.classList.add("salida-derecha");  
-  setTimeout(() => {  
-    currentIndex++;  
-    if (currentIndex >= mazo.length) {  
-      textoDiv.innerText = "¡Se terminaron las cartas!";  
-      juegoIniciado = false; cartaRevelada = false;  
-      botonPrev.style.display = "none"; botonInit.style.display = "inline-block";  
-      mazoBack.classList.remove("mover-izq"); return;  
-    }  
-    const carta = mazo[currentIndex];  
-    categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
-    textoDiv.innerText     = carta.texto;  
-    cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");  
-    cartaRevelada = false;  
-    botonPrev.style.display = currentIndex > 0 ? "inline-block" : "none";  
-    document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;  
-  }, 600);  
+  document.getElementById('votosContainer').innerHTML = '';
+  contenidoDiv.classList.remove('mostrar');
+  cartaDiv.classList.add('salida-derecha');
+
+  setTimeout(() => {
+    currentIndex++;
+    if (currentIndex >= mazo.length) return mostrarResultado();
+
+    const c = mazo[currentIndex];
+    categoriaDiv.innerText  = c.categoria;
+    categoriaDiv.className  = `categoria ${c.catClass}`;
+    textoDiv.innerText      = c.texto;
+
+    cartaDiv.className = 'carta-activa';
+    void cartaDiv.offsetWidth;
+    cartaDiv.classList.add('entrada-zoom');
+
+    cartaRevelada = false;
+    botonPrev.style.display = currentIndex > 0 ? 'inline-block' : 'none';
+    document.getElementById('contador').innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;
+  }, 600);
 }
 
-function anteriorCarta() {  
-  if (!juegoIniciado || currentIndex <= 0) return;  
-  const cartaDiv     = document.getElementById("carta");  
-  const contenidoDiv = document.getElementById("contenido-carta");  
-  const textoDiv     = document.getElementById("texto-carta");  
-  const categoriaDiv = document.getElementById("categoria-carta");  
+// 7) Votación
+function renderVotacion() {
+  const vc = document.getElementById('votosContainer');
+  vc.innerHTML = '<p>¿Quién recibe esta carta?</p>';
+  jugadores.forEach(j => {
+    const b = document.createElement('button');
+    b.textContent = j.name;
+    b.onclick = () => { j.score++; siguienteCarta(); };
+    vc.appendChild(b);
+  });
+}
 
-  contenidoDiv.classList.remove("mostrar");  
-  currentIndex--;  
-  const carta = mazo[currentIndex];  
-  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
-  textoDiv.innerText     = carta.texto;  
-  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");  
-  cartaRevelada = false;  
-  document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";  
-  document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;  
+// 8) Anterior
+function anteriorCarta() {
+  if (currentIndex <= 0) return;
+  currentIndex -= 2;
+  if (currentIndex < -1) currentIndex = -1;
+  siguienteCarta();
+}
+
+// 9) Finalizar con ranking centrado
+function finalizarJuego() {
+  const ranking = [...jugadores].sort((a,b) => b.score - a.score);
+  const max     = ranking[0].score;
+  let msg = max === 0
+    ? 'Nadie perdió: todos tienen 0 cartas asignadas'
+    : `${ranking[0].name} se comió más cartas, es el AMIGO DEL ORTO con ${ranking[0].score} votos`;
+
+  const lista = ranking.map(j => `<li>${j.name}: ${j.score}</li>`).join('');
+  document.getElementById('app').style.display    = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('ganador').innerHTML    = `<p>${msg}</p><ol>${lista}</ol>`;
+}
+
+// 10) Fin de mazo con ranking centrado
+function mostrarResultado() {
+  const ranking = [...jugadores].sort((a,b) => b.score - a.score);
+  const ganador = ranking[0];
+  const msg     = `${ganador.name} es el AMIGO DEL ORTO con ${ganador.score} votos`;
+  const lista   = ranking.map(j => `<li>${j.name}: ${j.score}</li>`).join('');
+  document.getElementById('app').style.display    = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('ganador').innerHTML    = `<p>${msg}</p><ol>${lista}</ol>`;
 }
