@@ -114,11 +114,12 @@ const random = [
   "¿Quién usaría Crocs en una gala sin dudarlo?"
 ];
 
-// Referencias a audio
+// Sonidos
 const flipSound  = document.getElementById('flipSound');
 const slideSound = document.getElementById('slideSound');
-const voteSound  = document.getElementById('voteSound');
+const passSound  = document.getElementById('passSound');
 const endSound   = document.getElementById('endSound');
+const dealSound  = document.getElementById('dealSound');
 
 // Estado global
 let jugadores     = [];
@@ -127,14 +128,19 @@ let modoJuego     = 'completo';
 let currentIndex  = -1;
 let cartaRevelada = false;
 
-// 1) Crear formulario de nombres
+// Crear formulario de nombres
 function crearFormNombres() {
+  endSound.currentTime = 0;
+  endSound.play();
+
   modoJuego = document.querySelector('input[name="modo"]:checked').value;
   const n = parseInt(document.getElementById('numJugadores').value);
   if (!n || n < 2) return alert('Poné al menos 2 jugadores');
   jugadores = [];
+
   const cont = document.getElementById('nombresContainer');
   cont.innerHTML = '';
+
   for (let i = 1; i <= n; i++) {
     const inp = document.createElement('input');
     inp.type = 'text';
@@ -142,64 +148,74 @@ function crearFormNombres() {
     inp.placeholder = `Jugador ${i}`;
     cont.appendChild(inp);
   }
+
   const btn = document.createElement('button');
   btn.textContent = 'Comenzar';
   btn.onclick = iniciarSetup;
   cont.appendChild(btn);
 }
 
-// 2) Leer nombres y arrancar
+// Leer nombres y arrancar
 function iniciarSetup() {
+  endSound.currentTime = 0;
+  endSound.play();
+
   const inputs = document.querySelectorAll('#nombresContainer input');
   for (let inp of inputs) {
     const name = inp.value.trim();
     if (!name) return alert('Completá todos los nombres');
     jugadores.push({ name, score: 0 });
   }
-  document.getElementById('setup').style.display      = 'none';
+
+  document.getElementById('setup').style.display = 'none';
   document.getElementById('container').style.background = 'none';
-  document.getElementById('app').style.display        = 'block';
+  document.getElementById('app').style.display = 'block';
   document.getElementById('mazoBack').classList.add('mover-izq');
+
   iniciarMazo();
   iniciarJuego();
 }
 
-// 3) Barajar y ajustar mazo
+// Barajar mazo
 function iniciarMazo() {
   mazo = [
     ...ridiculas.map(t => ({ texto: t, categoria: 'Ridícula', catClass: 'ridicula' })),
     ...cachondas.map(t => ({ texto: t, categoria: 'Picante',   catClass: 'picante'   })),
     ...oscuras.map(   t => ({ texto: t, categoria: 'Turbia',    catClass: 'turbia'    })),
-    ...psicologicas.map(t => ({ texto: t, categoria: 'Mental',    catClass: 'mental'    })),
+    ...psicologicas.map(t=> ({ texto: t, categoria: 'Mental',  catClass: 'mental'    })),
     ...random.map(    t => ({ texto: t, categoria: 'Random',    catClass: 'random'    }))
   ].sort(() => Math.random() - 0.5);
 
   if (modoJuego === 'cortado') mazo = mazo.slice(0, 50);
 
   currentIndex = -1;
-  document.getElementById('contador').innerText       = `Cartas restantes: ${mazo.length}`;
+  document.getElementById('contador').innerText = `Cartas restantes: ${mazo.length}`;
   document.getElementById('votosContainer').innerHTML = '';
   document.getElementById('boton-anterior').style.display = 'none';
+
+  dealSound.currentTime = 0;
+  dealSound.play();
 }
 
-// 4) Comenzar el juego (saca la primera carta)
+// Iniciar juego
 function iniciarJuego() {
   cartaRevelada = false;
   siguienteCarta();
 }
 
-// 5) Click en carta: revelarla + votar
+// Girar carta
 function cardClick() {
   if (cartaRevelada) return;
-  flipSound.currentTime  = 0;
+  flipSound.currentTime = 0;
   flipSound.play();
+
   document.getElementById('contenido-carta').classList.add('mostrar');
   cartaRevelada = true;
   document.getElementById('boton-anterior').style.display = currentIndex > 0 ? 'inline-block' : 'none';
   renderVotacion();
 }
 
-// 6) Mostrar siguiente carta
+// Siguiente carta
 function siguienteCarta() {
   const cartaDiv     = document.getElementById('carta');
   const contenidoDiv = document.getElementById('contenido-carta');
@@ -212,16 +228,16 @@ function siguienteCarta() {
   cartaDiv.classList.add('salida-derecha');
 
   setTimeout(() => {
-    slideSound.currentTime = 0;
-    slideSound.play();
-
     currentIndex++;
     if (currentIndex >= mazo.length) return mostrarResultado();
 
+    slideSound.currentTime = 0;
+    slideSound.play();
+
     const c = mazo[currentIndex];
-    categoriaDiv.innerText  = c.categoria;
-    categoriaDiv.className  = `categoria ${c.catClass}`;
-    textoDiv.innerText      = c.texto;
+    categoriaDiv.innerText = c.categoria;
+    categoriaDiv.className = `categoria ${c.catClass}`;
+    textoDiv.innerText     = c.texto;
 
     cartaDiv.className = 'carta-activa';
     void cartaDiv.offsetWidth;
@@ -233,7 +249,7 @@ function siguienteCarta() {
   }, 600);
 }
 
-// 7) Render de votación
+// Votación
 function renderVotacion() {
   const vc = document.getElementById('votosContainer');
   vc.innerHTML = '<p>¿Quién recibe esta carta?</p>';
@@ -241,8 +257,8 @@ function renderVotacion() {
     const b = document.createElement('button');
     b.textContent = j.name;
     b.onclick = () => {
-      voteSound.currentTime = 0;
-      voteSound.play();
+      passSound.currentTime = 0;
+      passSound.play();
       j.score++;
       siguienteCarta();
     };
@@ -250,7 +266,7 @@ function renderVotacion() {
   });
 }
 
-// 8) Volver atrás
+// Anterior carta (sin sonido)
 function anteriorCarta() {
   if (currentIndex <= 0) return;
   currentIndex -= 2;
@@ -258,33 +274,39 @@ function anteriorCarta() {
   siguienteCarta();
 }
 
-// 9) Finalizar con ranking centrado
+// Finalizar juego
 function finalizarJuego() {
   endSound.currentTime = 0;
   endSound.play();
+  mostrarResultado();
+}
 
-  const ranking = [...jugadores].sort((a,b) => b.score - a.score);
+// Mostrar resultado
+function mostrarResultado() {
+  const ranking = [...jugadores].sort((a, b) => b.score - a.score);
   const max     = ranking[0].score;
-  let msg = max === 0
-    ? 'Nadie perdió: todos tienen 0 cartas asignadas'
-    : `${ranking[0].name} se comió más cartas, es el AMIGO DEL ORTO con ${ranking[0].score} votos`;
+  const empatados = ranking.filter(j => j.score === max);
+
+  let msg = '';
+  if (max === 0) {
+    msg = 'Nadie perdió: todos tienen 0 cartas asignadas';
+  } else if (empatados.length > 1) {
+    const nombres = empatados.map(j => j.name).join(', ');
+    msg = `Empate entre: ${nombres} con ${max} cartas cada uno.`;
+  } else {
+    msg = `${ranking[0].name} es el AMIGO DEL ORTO con ${ranking[0].score} votos`;
+  }
 
   const lista = ranking.map(j => `<li>${j.name}: ${j.score}</li>`).join('');
-  document.getElementById('app').style.display    = 'none';
+  document.getElementById('app').style.display = 'none';
   document.getElementById('result').style.display = 'block';
-  document.getElementById('ganador').innerHTML    = `<p>${msg}</p><ol>${lista}</ol>`;
+  document.getElementById('ganador').innerHTML = `<p>${msg}</p><ol>${lista}</ol>`;
 }
 
-// 10) Mostrar resultado final al acabar mazo (con ranking)
-function mostrarResultado() {
+// Reiniciar juego
+function reiniciarJuego() {
   endSound.currentTime = 0;
   endSound.play();
-
-  const ranking = [...jugadores].sort((a,b) => b.score - a.score);
-  const ganador = ranking[0];
-  const msg     = `${ganador.name} es el AMIGO DEL ORTO con ${ganador.score} votos`;
-  const lista   = ranking.map(j => `<li>${j.name}: ${j.score}</li>`).join('');
-  document.getElementById('app').style.display    = 'none';
-  document.getElementById('result').style.display = 'block';
-  document.getElementById('ganador').innerHTML    = `<p>${msg}</p><ol>${lista}</ol>`;
+  setTimeout(() => location.reload(), 500);
 }
+
