@@ -114,14 +114,17 @@ const random = [
   "¿Quién usaría Crocs en una gala sin dudarlo?"
 ];
 
-let mazo = [], juegoIniciado = false, currentIndex = -1, cartaRevelada = false;
+let mazo = [],
+    juegoIniciado = false,
+    currentIndex = -1,
+    cartaRevelada = false;
 
 function iniciarMazo() {
   mazo = [
     ...ridiculas.map(t => ({ texto: t, categoria: 'Ridícula', catClass: 'ridicula' })),
     ...cachondas.map(t => ({ texto: t, categoria: 'Picante',   catClass: 'picante'   })),
-    ...oscuras.map(   t => ({ texto: t, categoria: 'Turbia',    catClass: 'turbia'    })),
-    ...psicologicas.map(t=> ({ texto: t, categoria: 'Mental',    catClass: 'mental'    })),
+    ...oscuras.map(   t => ({ texto: t, categoria: 'Turbia',    catClass: 'turbia'    })),  
+    ...psicologicas.map(t=> ({ texto: t, categoria: 'Mental',    catClass: 'mental'    })),  
     ...random.map(    t => ({ texto: t, categoria: 'Random',    catClass: 'random'    }))
   ].sort(() => Math.random() - 0.5);
 
@@ -130,78 +133,80 @@ function iniciarMazo() {
 }
 
 function iniciarJuego() {
-  iniciarMazo(); juegoIniciado = true; cartaRevelada = false;
-  const cartaDiv     = document.getElementById("carta");
-  const contenidoDiv = document.getElementById("contenido-carta");
-  const textoDiv     = document.getElementById("texto-carta");
-  const categoriaDiv = document.getElementById("categoria-carta");
-  const mazoBack     = document.getElementById("mazoBack");
-  const botonInit    = document.getElementById("boton-inicio");
+  iniciarMazo(); juegoIniciado = true; cartaRevelada = false;  
+  const cartaDiv     = document.getElementById("carta");  
+  const contenidoDiv = document.getElementById("contenido-carta");  
+  const textoDiv     = document.getElementById("texto-carta");  
+  const categoriaDiv = document.getElementById("categoria-carta");  
+  const mazoBack     = document.getElementById("mazoBack");  
+  const botonInit    = document.getElementById("boton-inicio");  
   const botonPrev    = document.getElementById("boton-anterior");
 
-  mazoBack.classList.add("mover-izq");
-  contenidoDiv.classList.remove("mostrar"); textoDiv.innerText = ""; categoriaDiv.innerText = "";
-  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth;
-  currentIndex = 0;
-  const carta = mazo[currentIndex];
-  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;
-  textoDiv.innerText     = carta.texto; cartaDiv.classList.add("entrada-zoom");
-  botonInit.style.display = "none"; botonPrev.style.display = "none";
+  mazoBack.classList.add("mover-izq");  
+  contenidoDiv.classList.remove("mostrar"); textoDiv.innerText = ""; categoriaDiv.innerText = "";  
+  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth;  
+
+  currentIndex = 0;  
+  const carta = mazo[currentIndex];  
+  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
+  textoDiv.innerText     = carta.texto; cartaDiv.classList.add("entrada-zoom");  
+
+  botonInit.style.display = "none"; botonPrev.style.display = "none";  
 }
 
-function cardClick() {
-  if (!juegoIniciado) return;
-  const contenidoDiv = document.getElementById("contenido-carta");
-  if (!cartaRevelada) {
-    document.getElementById("flipSound").play(); contenidoDiv.classList.add("mostrar");
-    cartaRevelada = true; document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";
-  } else siguienteCarta();
+function cardClick() {  
+  if (!juegoIniciado) return;  
+  const contenidoDiv = document.getElementById("contenido-carta");  
+  if (!cartaRevelada) {  
+    document.getElementById("flipSound").play(); contenidoDiv.classList.add("mostrar");  
+    cartaRevelada = true; document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";  
+  } else siguienteCarta();  
 }
 
-function siguienteCarta() {
-  if (!juegoIniciado) return;
-  const cartaDiv     = document.getElementById("carta");
-  const contenidoDiv = document.getElementById("contenido-carta");
-  const textoDiv     = document.getElementById("texto-carta");
-  const categoriaDiv = document.getElementById("categoria-carta");
-  const mazoBack     = document.getElementById("mazoBack");
-  const botonInit    = document.getElementById("boton-inicio");
+function siguienteCarta() {  
+  if (!juegoIniciado) return;  
+  const cartaDiv     = document.getElementById("carta");  
+  const contenidoDiv = document.getElementById("contenido-carta");  
+  const textoDiv     = document.getElementById("texto-carta");  
+  const categoriaDiv = document.getElementById("categoria-carta");  
+  const mazoBack     = document.getElementById("mazoBack");  
+  const botonInit    = document.getElementById("boton-inicio");  
   const botonPrev    = document.getElementById("boton-anterior");
 
-  contenidoDiv.classList.remove("mostrar");
-  cartaDiv.classList.add("salida-derecha");
-  setTimeout(() => {
-    currentIndex++;
-    if (currentIndex >= mazo.length) {
-      textoDiv.innerText = "¡Se terminaron las cartas!";
-      juegoIniciado = false; cartaRevelada = false;
-      botonPrev.style.display = "none"; botonInit.style.display = "inline-block";
-      mazoBack.classList.remove("mover-izq"); return;
-    }
-    const carta = mazo[currentIndex];
-    categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;
-    textoDiv.innerText     = carta.texto;
-    cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");
-    cartaRevelada = false;
-    botonPrev.style.display = currentIndex > 0 ? "inline-block" : "none";
-    document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;
-  }, 600);
+  contenidoDiv.classList.remove("mostrar");  
+  cartaDiv.classList.add("salida-derecha");  
+  setTimeout(() => {  
+    currentIndex++;  
+    if (currentIndex >= mazo.length) {  
+      textoDiv.innerText = "¡Se terminaron las cartas!";  
+      juegoIniciado = false; cartaRevelada = false;  
+      botonPrev.style.display = "none"; botonInit.style.display = "inline-block";  
+      mazoBack.classList.remove("mover-izq"); return;  
+    }  
+    const carta = mazo[currentIndex];  
+    categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
+    textoDiv.innerText     = carta.texto;  
+    cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");  
+    cartaRevelada = false;  
+    botonPrev.style.display = currentIndex > 0 ? "inline-block" : "none";  
+    document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;  
+  }, 600);  
 }
 
-function anteriorCarta() {
-  if (!juegoIniciado || currentIndex <= 0) return;
-  const cartaDiv     = document.getElementById("carta");
-  const contenidoDiv = document.getElementById("contenido-carta");
-  const textoDiv     = document.getElementById("texto-carta");
-  const categoriaDiv = document.getElementById("categoria-carta");
+function anteriorCarta() {  
+  if (!juegoIniciado || currentIndex <= 0) return;  
+  const cartaDiv     = document.getElementById("carta");  
+  const contenidoDiv = document.getElementById("contenido-carta");  
+  const textoDiv     = document.getElementById("texto-carta");  
+  const categoriaDiv = document.getElementById("categoria-carta");  
 
-  contenidoDiv.classList.remove("mostrar");
-  currentIndex--;
-  const carta = mazo[currentIndex];
-  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;
-  textoDiv.innerText     = carta.texto;
-  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");
-  cartaRevelada = false;
-  document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";
-  document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;
+  contenidoDiv.classList.remove("mostrar");  
+  currentIndex--;  
+  const carta = mazo[currentIndex];  
+  categoriaDiv.innerText = carta.categoria; categoriaDiv.className = `categoria ${carta.catClass}`;  
+  textoDiv.innerText     = carta.texto;  
+  cartaDiv.className = "carta-activa"; void cartaDiv.offsetWidth; cartaDiv.classList.add("entrada-zoom");  
+  cartaRevelada = false;  
+  document.getElementById("boton-anterior").style.display = currentIndex > 0 ? "inline-block" : "none";  
+  document.getElementById("contador").innerText = `Cartas restantes: ${mazo.length - currentIndex - 1}`;  
 }
