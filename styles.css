@@ -7,7 +7,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #1a1a1a, #000);
+  /* Fondo: tu imagen de mesa de madera */
+  background: url('fondo-madera.png') center center / cover no-repeat;
   font-family: 'Poppins', sans-serif;
   color: #fff;
 }
@@ -18,6 +19,9 @@ body {
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
+  /* ligero overlay para que resalte el contenido */
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
 }
 
 h1 {
@@ -31,7 +35,7 @@ h1 {
   position: relative;
   width: 250px;
   height: 375px;
-  margin: 30px auto;
+  margin: 30px auto 60px auto;
   perspective: 1000px;
 }
 
@@ -53,12 +57,15 @@ h1 {
 }
 
 .mazo-back.mover-izq {
-  transform: translateX(-140px);
+  transform: translateX(-70px);
 }
 
 .carta-activa {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   transform: scale(0);
   opacity: 0;
   transform-origin: center center;
@@ -79,8 +86,11 @@ h1 {
 }
 
 .contenido {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: white;
   display: flex;
   flex-direction: column;
@@ -129,6 +139,8 @@ h1 {
 #contador {
   margin: 10px 0;
   color: #aaa;
+  position: relative;
+  z-index: 2;
 }
 
 button {
@@ -146,4 +158,5 @@ button {
 button:hover {
   background-color: #3a9fd9;
 }
+
 
