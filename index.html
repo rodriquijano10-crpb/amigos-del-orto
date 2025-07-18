@@ -2,45 +2,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Amigos del Orto</title>
-  <!-- Tipografía Poppins Bold -->
+  <!-- Tipografía Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app">
-    <h1>Amigos del Orto</h1>
-
-    <!-- Sonido de giro -->
-    <audio id="flipSound"
-           src="https://cdn.pixabay.com/download/audio/2023/05/25/audio_f3a1570146.mp3?filename=card-flip-14684.mp3">
-    </audio>
-
-    <div class="mazo-container">
-      <!-- Dorso del mazo -->
-      <div class="mazo-back" id="mazoBack">
-        <span class="dorso-texto">Amigos del Orto</span>
+  <div id="container">
+    <!-- SETUP -->
+    <div id="setup">
+      <h1>Eligí un modo</h1>
+      <div id="modoSelector">
+        <label><input type="radio" name="modo" value="completo" checked> Mazo completo</label>
+        <label><input type="radio" name="modo" value="cortado"> Mazo cortado (50 cartas)</label>
       </div>
+      <h1>¿Cuántos jugadores son?</h1>
+      <input type="number" id="numJugadores" min="2" placeholder="Ej: 4">
+      <button id="btnConfirmar" onclick="crearFormNombres()">Confirmar</button>
+      <div id="nombresContainer"></div>
+    </div>
 
-      <!-- Carta activa -->
-      <div class="carta-activa" id="carta" onclick="cardClick()">
-        <div class="dorso">
+    <!-- JUEGO -->
+    <div id="app" style="display:none;">
+      <h1 id="titulo-sacar-carta">SACÁ UNA CARTA Y VOTA A TU AMIGO DEL ORTO</h1>
+      <audio id="flipSound"
+             src="https://cdn.pixabay.com/download/audio/2023/05/25/audio_f3a1570146.mp3?filename=card-flip-14684.mp3">
+      </audio>
+      <div class="mazo-container">
+        <div class="mazo-back" id="mazoBack">
           <span class="dorso-texto">Amigos del Orto</span>
         </div>
-        <div class="contenido" id="contenido-carta">
-          <div class="categoria" id="categoria-carta"></div>
-          <div class="texto" id="texto-carta"></div>
+        <div class="carta-activa" id="carta" onclick="cardClick()">
+          <div class="dorso">
+            <span class="dorso-texto">Amigos del Orto</span>
+          </div>
+          <div class="contenido" id="contenido-carta">
+            <div class="categoria" id="categoria-carta"></div>
+            <div class="texto" id="texto-carta"></div>
+          </div>
         </div>
+      </div>
+      <div id="votosContainer"></div>
+      <p id="contador">Cartas restantes: 0</p>
+      <div class="botones-juego">
+        <button id="boton-anterior" onclick="anteriorCarta()" style="display:none;">Anterior carta</button>
+        <button id="boton-finalizar" onclick="finalizarJuego()">Finalizar</button>
       </div>
     </div>
 
-    <p id="contador">Cartas restantes: 0</p>
-
-    <button id="boton-inicio" onclick="iniciarJuego()">Iniciar juego</button>
-    <button id="boton-anterior" onclick="anteriorCarta()" style="display:none;">
-      Anterior carta
-    </button>
+    <!-- RESULTADO -->
+    <div id="result" style="display:none;">
+      <h1>¡Fin del juego!</h1>
+      <div id="ganador"></div>
+      <button onclick="window.location.reload()">Jugar de nuevo</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
