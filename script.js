@@ -309,4 +309,3 @@ function reiniciarJuego() {
   endSound.play();
   setTimeout(() => location.reload(), 500);
 }
-
