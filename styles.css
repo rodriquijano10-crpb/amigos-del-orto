@@ -1,34 +1,43 @@
 body {
+  background: url('fondo-madera.png') center / cover no-repeat;
   margin: 0;
-  padding: 0;
   font-family: 'Poppins', sans-serif;
   color: #fff;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   min-height: 100vh;
-  overflow-x: hidden; /* 👈 Esto evita scroll horizontal */
+  overflow-x: hidden;
 }
 
 #container {
-  margin: 0 auto;
-  box-sizing: border-box;
   width: 100%;
   max-width: 600px;
   padding: 20px;
+  box-sizing: border-box;
   text-align: center;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 12px;
+  margin: 20px auto;
 }
 
 h1 {
   margin-bottom: 16px;
+  font-size: 1.8rem;
 }
 
 #titulo-sacar-carta {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 12px;
   padding: 8px;
+}
+
+#modoSelector {
+  margin-bottom: 12px;
+}
+#modoSelector label {
+  margin-right: 12px;
+  font-size: 1rem;
 }
 
 input[type="number"],
@@ -46,9 +55,7 @@ input[type="number"],
   color: #000;
 }
 
-#btnConfirmar,
-#nombresContainer button,
-.botones-juego button {
+button {
   display: inline-block;
   margin: 8px 0;
   padding: 10px 20px;
@@ -61,10 +68,7 @@ input[type="number"],
   font-family: 'Poppins', sans-serif;
   transition: background 0.3s, color 0.3s;
 }
-
-#btnConfirmar:hover,
-#nombresContainer button:hover,
-.botones-juego button:hover {
+button:hover {
   background: #fff;
   color: #000;
 }
@@ -82,47 +86,43 @@ input[type="number"],
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg,#000,#242424);
+  background: linear-gradient(135deg, #000, #242424);
   border-radius: 16px;
   border: 2px solid #000;
-  box-shadow: inset 0 0 30px rgba(255,255,255,0.075), 0 6px 20px rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.075), 0 6px 20px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
   transform: scale(0.85);
-  transition: transform 0.6s;
   z-index: 0;
 }
-
 .mazo-back.mover-izq {
   transform: translateX(-70px) scale(0.85);
 }
-
 .dorso-texto {
   font-size: 20px;
   font-weight: 700;
-  text-decoration: underline;
   color: #fff;
+  text-decoration: underline;
 }
 
 .carta-activa {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   transform: scale(0);
   opacity: 0;
-  transform-origin: center center;
   cursor: pointer;
   z-index: 1;
 }
-
 .carta-activa.entrada-zoom {
   transition: transform 0.6s ease, opacity 0.6s ease;
   transform: scale(1);
   opacity: 1;
 }
-
 .carta-activa.salida-derecha {
   transition: transform 0.6s ease, opacity 0.6s ease;
   transform: translateX(100%) scale(1);
@@ -131,8 +131,10 @@ input[type="number"],
 
 .contenido {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -175,19 +177,6 @@ input[type="number"],
 }
 #votosContainer button {
   margin: 4px;
-  padding: 8px 12px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-}
-#votosContainer button:hover {
-  background: #fff;
-  color: #000;
 }
 
 #contador {
@@ -208,100 +197,5 @@ input[type="number"],
 #result #ganador {
   margin-bottom: 12px;
   font-size: 18px;
-}
-#result button {
-  padding: 10px 16px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-}
-#result button:hover {
-  background: #fff;
-  color: #000;
-}
-/* ======================= */
-/* AJUSTES RESPONSIVE     */
-/* ======================= */
-@media (max-width: 768px) {
-  #container {
-    width: calc(100% - 32px);
-    margin: 0 auto;
-    padding: 16px;
-  }
-
-  body {
-    align-items: flex-start;
-    padding-top: 20px;
-  }
-}
-
-  #container {
-    max-width: 100%;
-    margin: 0 10px;
-    padding: 16px;
-    border-radius: 8px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  #titulo-sacar-carta {
-    font-size: 1.2rem;
-    padding: 6px;
-  }
-
-  input[type="number"],
-  #nombresContainer input {
-    width: 100%;
-    font-size: 15px;
-    padding: 8px;
-  }
-
-  .mazo-container {
-    width: 180px;
-    height: 270px;
-    margin: 16px auto;
-  }
-
-  .dorso-texto {
-    font-size: 14px;
-  }
-
-  .categoria {
-    font-size: 18px;
-  }
-
-  .texto {
-    font-size: 14px;
-    padding: 0 5px;
-  }
-
-  #votosContainer button {
-    padding: 6px 10px;
-    font-size: 14px;
-  }
-
-  #contador {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .botones-juego button,
-  #btnConfirmar,
-  #nombresContainer button,
-  #result button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  #result ol {
-    font-size: 14px;
-  }
 }
 
