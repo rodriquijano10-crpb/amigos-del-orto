@@ -7,8 +7,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Fondo: tu imagen de mesa de madera */
-  background: url('fondo-madera.png') center center / cover no-repeat;
+  /* Fondo de mesa de madera alineado al tope */
+  background: url('fondo-madera.png') top center / cover no-repeat;
+  background-attachment: fixed;
   font-family: 'Poppins', sans-serif;
   color: #fff;
 }
@@ -19,9 +20,7 @@ body {
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  /* ligero overlay para que resalte el contenido */
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 16px;
+  /* quitamos el fondo semitransparente y el border-radius */
 }
 
 h1 {
