@@ -1,70 +1,120 @@
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
 body {
+  background: url('fondo-madera.png') top center / cover no-repeat;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Fondo de mesa de madera alineado al tope */
-  background: url('fondo-madera.png') top center / cover no-repeat;
-  background-attachment: fixed;
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
+  height: 100vh;
 }
 
-#app {
+#container {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  /* quitamos el fondo semitransparente y el border-radius */
+  background: rgba(0,0,0,0.6);
+  border-radius: 12px;
 }
 
 h1 {
-  font-size: 2.2rem;
-  color: #53B3F3;
-  margin-bottom: 20px;
-  font-weight: 700;
+  margin-bottom: 16px;
 }
 
+#titulo-sacar-carta {
+  background: rgba(0,0,0,0.6);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+/* ===== Inputs ===== */
+input[type="number"],
+#nombresContainer input {
+  display: block;
+  width: 80%;
+  max-width: 300px;
+  margin: 8px auto;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  color: #000;
+}
+
+/* ===== Botones ===== */
+#btnConfirmar,
+#nombresContainer button,
+.botones-juego button {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 10px 20px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+#btnConfirmar:hover,
+#nombresContainer button:hover,
+.botones-juego button:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* ===== Cartas ===== */
 .mazo-container {
   position: relative;
   width: 250px;
   height: 375px;
-  margin: 30px auto 60px auto;
+  margin: 20px auto;
   perspective: 1000px;
 }
 
-.mazo-back, .dorso {
+.mazo-back,
+.dorso {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0e0e0e, #222);
+  background: linear-gradient(135deg,#000,#242424);
   border-radius: 16px;
-  border: 4px solid black;
-  box-shadow: inset 0 0 30px rgba(255,255,255,0.05),
-              0 6px 20px rgba(0,0,0,0.6);
+  border: 2px solid #000;
+  box-shadow:
+    inset 0 0 30px rgba(255,255,255,0.075),
+    0 6px 20px rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
-  transition: transform 0.6s ease;
+  transform: scale(0.85);
+  /* Quitamos el filter para que el texto salga bien blanco */
+  /* filter: brightness(0.6); */
+  transition: transform 0.6s;
   z-index: 0;
 }
 
+/* siempre visible a la izquierda */
 .mazo-back.mover-izq {
-  transform: translateX(-70px);
+  transform: translateX(-70px) scale(0.85);
+}
+
+/* Forzamos el texto del dorso 100% blanco */
+.mazo-back .dorso-texto,
+.dorso .dorso-texto {
+  color: #fff;
 }
 
 .carta-activa {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   transform: scale(0);
   opacity: 0;
   transform-origin: center center;
@@ -86,11 +136,9 @@ h1 {
 
 .contenido {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -98,20 +146,20 @@ h1 {
   padding: 20px;
   border-radius: 16px;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s;
   z-index: 1;
 }
+
 .contenido.mostrar {
   opacity: 1;
 }
 
 .categoria {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-/* Colores por categoría */
 .categoria.ridicula { color: #f1c40f; }
 .categoria.picante  { color: #e63946; }
 .categoria.turbia   { color: #8e44ad; }
@@ -123,38 +171,77 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
-  font-size: 18px;
+  color: #000;
+  font-size: 16px;
   text-align: center;
 }
 
 .dorso-texto {
   font-size: 20px;
   font-weight: 700;
-  color: white;
-  text-shadow: 0 0 5px #fff;
+  /* color: #fff; ya forzado arriba */
+  text-decoration: underline;
 }
 
-#contador {
-  margin: 10px 0;
-  color: #aaa;
-  position: relative;
-  z-index: 2;
+#votosContainer {
+  margin: 16px 0;
 }
-
-button {
-  margin: 5px;
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #53B3F3;
-  color: white;
+#votosContainer button {
+  margin: 4px;
+  padding: 8px 12px;
+  background: #000;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  transition: background 0.3s, color 0.3s;
 }
-button:hover {
-  background-color: #3a9fd9;
+#votosContainer button:hover {
+  background: #fff;
+  color: #000;
 }
 
+#contador {
+  margin: 10px 0;
+  color: #ddd;
+}
+
+/* RESULTADO */
+#result ol {
+  list-style-position: inside;
+  padding: 0;
+  margin: 8px auto 16px;
+  display: inline-block;
+  text-align: center; /* centramos el listado */
+}
+
+#result {
+  background: rgba(0,0,0,0.6);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+#result li {
+  margin: 4px 0;
+}
+#result #ganador {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+#result button {
+  padding: 10px 16px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+#result button:hover {
+  background: #fff;
+  color: #000;
+}
