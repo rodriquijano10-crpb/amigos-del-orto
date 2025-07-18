@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Amigos del Orto</title>
-  <!-- Tipografía Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,18 +27,11 @@
       <h1 id="titulo-sacar-carta">SACÁ UNA CARTA Y VOTA A TU AMIGO DEL ORTO</h1>
 
       <!-- Audios -->
-      <audio id="flipSound"
-             src="https://cdn.pixabay.com/download/audio/2023/05/25/audio_f3a1570146.mp3?filename=card-flip-14684.mp3">
-      </audio>
-      <audio id="slideSound"
-             src="https://cdn.pixabay.com/download/audio/2022/09/10/audio_3f0d8fd5b1.mp3?filename=card-slide-6940.mp3">
-      </audio>
-      <audio id="voteSound"
-             src="https://cdn.pixabay.com/download/audio/2021/08/10/audio_2a99228c85.mp3?filename=click-6052.mp3">
-      </audio>
-      <audio id="endSound"
-             src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9ba8f1e69d.mp3?filename=game-over-arcade-6435.mp3">
-      </audio>
+      <audio id="flipSound"  preload="auto" src="flip.mp3"></audio>
+      <audio id="slideSound" preload="auto" src="slide.mp3"></audio>
+      <audio id="passSound"  preload="auto" src="pass.mp3"></audio>
+      <audio id="endSound"   preload="auto" src="end.mp3"></audio>
+      <audio id="dealSound"  preload="auto" src="deal.mp3"></audio>
 
       <div class="mazo-container">
         <div class="mazo-back" id="mazoBack">
@@ -55,6 +47,7 @@
           </div>
         </div>
       </div>
+
       <div id="votosContainer"></div>
       <p id="contador">Cartas restantes: 0</p>
       <div class="botones-juego">
@@ -67,11 +60,10 @@
     <div id="result" style="display:none;">
       <h1>¡Fin del juego!</h1>
       <div id="ganador"></div>
-      <button onclick="window.location.reload()">Jugar de nuevo</button>
+      <button onclick="reiniciarJuego()">Jugar de nuevo</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
