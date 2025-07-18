@@ -7,8 +7,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Fondo de mesa de madera */
   background: url('fondo-madera.png') top center / cover no-repeat;
-  background-attachment: fixed;
   font-family: 'Poppins', sans-serif;
   color: #fff;
 }
@@ -21,24 +21,40 @@ body {
   text-align: center;
 }
 
-/* título */
+/* --------------------------------------------------
+   Texto principal
+-------------------------------------------------- */
 h1 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   color: #53B3F3;
   margin-bottom: 20px;
   font-weight: 700;
 }
 
-/* contenedor de mazo + carta */
+/* --------------------------------------------------
+   Envoltorio semitransparente solo para el mazo+cartas
+-------------------------------------------------- */
+.cards-wrapper {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 16px;
+  border-radius: 16px;
+}
+
+/* --------------------------------------------------
+   Contenedor perspectiva
+-------------------------------------------------- */
 .mazo-container {
   position: relative;
   width: 250px;
   height: 375px;
-  margin: 30px auto 60px auto;
+  margin: 0 auto;
   perspective: 1000px;
 }
 
-/* Mazo (dorso) */
+/* --------------------------------------------------
+   Dorso del mazo
+-------------------------------------------------- */
 .mazo-back {
   position: absolute;
   width: 100%;
@@ -54,27 +70,26 @@ h1 {
   justify-content: center;
   backface-visibility: hidden;
 
-  /* diferenciación: más pequeño y más oscuro */
-  transform: scale(0.9);
-  filter: brightness(0.7);
+  /* diferenciación más sutil */
+  transform: scale(0.85);
+  filter: brightness(0.6);
 
   transition: transform 0.6s ease, filter 0.6s ease;
   z-index: 0;
 }
 
-/* Cuando iniciamos el juego, desplazamos + mantenemos escala/brillo */
 .mazo-back.mover-izq {
-  transform: translateX(-70px) scale(0.9);
-  filter: brightness(0.7);
+  transform: translateX(-70px) scale(0.85);
+  filter: brightness(0.6);
 }
 
-/* Carta activa */
+/* --------------------------------------------------
+   Carta activa
+-------------------------------------------------- */
 .carta-activa {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   transform: scale(0);
   opacity: 0;
   transform-origin: center center;
@@ -94,10 +109,11 @@ h1 {
   opacity: 0;
 }
 
-/* Frente de la carta */
+/* --------------------------------------------------
+   Frente de la carta
+-------------------------------------------------- */
 .contenido {
-  position: absolute;
-  top: 0; left: 0;
+  position: absolute; top: 0; left: 0;
   width: 100%; height: 100%;
   background: white;
   display: flex;
@@ -116,7 +132,7 @@ h1 {
 
 /* Categoría */
 .categoria {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -138,7 +154,7 @@ h1 {
   text-align: center;
 }
 
-/* Textos del dorso y contador */
+/* Dorso-texto y contador */
 .dorso-texto {
   font-size: 20px;
   font-weight: 700;
@@ -147,9 +163,9 @@ h1 {
 }
 
 #contador {
-  margin: 10px 0;
-  color: #aaa;
-  position: relative;
+  margin: 16px 0;
+  color: #ddd;
+  font-weight: 500;
   z-index: 2;
 }
 
