@@ -7,7 +7,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Fondo de mesa de madera alineado al tope */
   background: url('fondo-madera.png') top center / cover no-repeat;
   background-attachment: fixed;
   font-family: 'Poppins', sans-serif;
@@ -20,17 +19,17 @@ body {
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  /* quitamos el fondo semitransparente y el border-radius */
 }
 
+/* título */
 h1 {
   font-size: 2.2rem;
-  color: #FFFFFF;
+  color: #53B3F3;
   margin-bottom: 20px;
   font-weight: 700;
-  text-decoration: underline;
 }
 
+/* contenedor de mazo + carta */
 .mazo-container {
   position: relative;
   width: 250px;
@@ -39,25 +38,37 @@ h1 {
   perspective: 1000px;
 }
 
-.mazo-back, .dorso {
+/* Mazo (dorso) */
+.mazo-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #000000;
+  background: linear-gradient(135deg, #0e0e0e, #222);
   border-radius: 16px;
   border: 4px solid black;
+  box-shadow:
+    inset 0 0 30px rgba(255,255,255,0.05),
+    0 6px 20px rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
-  transition: transform 0.6s ease;
+
+  /* diferenciación: más pequeño y más oscuro */
+  transform: scale(0.9);
+  filter: brightness(0.7);
+
+  transition: transform 0.6s ease, filter 0.6s ease;
   z-index: 0;
 }
 
+/* Cuando iniciamos el juego, desplazamos + mantenemos escala/brillo */
 .mazo-back.mover-izq {
-  transform: translateX(-70px);
+  transform: translateX(-70px) scale(0.9);
+  filter: brightness(0.7);
 }
 
+/* Carta activa */
 .carta-activa {
   position: absolute;
   top: 0;
@@ -68,7 +79,7 @@ h1 {
   opacity: 0;
   transform-origin: center center;
   cursor: pointer;
-  z-index: 1;
+  z-index: 1; /* siempre sobre el mazo */
 }
 
 .carta-activa.entrada-zoom {
@@ -83,12 +94,11 @@ h1 {
   opacity: 0;
 }
 
+/* Frente de la carta */
 .contenido {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: white;
   display: flex;
   flex-direction: column;
@@ -104,19 +114,20 @@ h1 {
   opacity: 1;
 }
 
+/* Categoría */
 .categoria {
   font-size: 30px;
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-/* Colores por categoría */
 .categoria.ridicula { color: #f1c40f; }
 .categoria.picante  { color: #e63946; }
 .categoria.turbia   { color: #8e44ad; }
 .categoria.mental   { color: #1abc9c; }
 .categoria.random   { color: #3498db; }
 
+/* Texto central */
 .texto {
   flex: 1;
   display: flex;
@@ -127,13 +138,13 @@ h1 {
   text-align: center;
 }
 
+/* Textos del dorso y contador */
 .dorso-texto {
   font-size: 20px;
   font-weight: 700;
   color: white;
-  text-decoration: underline;
+  text-shadow: 0 0 5px #fff;
 }
-
 
 #contador {
   margin: 10px 0;
@@ -142,6 +153,7 @@ h1 {
   z-index: 2;
 }
 
+/* Botones */
 button {
   margin: 5px;
   padding: 12px 24px;
@@ -157,5 +169,4 @@ button {
 button:hover {
   background-color: #3a9fd9;
 }
-
 
