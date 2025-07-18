@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Amigos del Orto</title>
+  <!-- Tipografía Poppins Bold -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <h1>Amigos del Orto</h1>
+
+    <!-- Sonido de giro -->
+    <audio id="flipSound"
+           src="https://cdn.pixabay.com/download/audio/2023/05/25/audio_f3a1570146.mp3?filename=card-flip-14684.mp3">
+    </audio>
+
+    <div class="mazo-container">
+      <!-- Dorso del mazo -->
+      <div class="mazo-back" id="mazoBack">
+        <span class="dorso-texto">Amigos del Orto</span>
+      </div>
+
+      <!-- Carta activa -->
+      <div class="carta-activa" id="carta" onclick="cardClick()">
+        <div class="dorso">
+          <span class="dorso-texto">Amigos del Orto</span>
+        </div>
+        <div class="contenido" id="contenido-carta">
+          <div class="categoria" id="categoria-carta"></div>
+          <div class="texto" id="texto-carta"></div>
+        </div>
+      </div>
+    </div>
+
+    <p id="contador">Cartas restantes: 0</p>
+
+    <button id="boton-inicio" onclick="iniciarJuego()">Iniciar juego</button>
+    <button id="boton-anterior" onclick="anteriorCarta()" style="display:none;">
+      Anterior carta
+    </button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
