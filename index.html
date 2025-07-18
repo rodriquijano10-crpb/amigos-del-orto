@@ -17,20 +17,23 @@
            src="https://cdn.pixabay.com/download/audio/2023/05/25/audio_f3a1570146.mp3?filename=card-flip-14684.mp3">
     </audio>
 
-    <div class="mazo-container">
-      <!-- Dorso del mazo -->
-      <div class="mazo-back" id="mazoBack">
-        <span class="dorso-texto">Amigos del Orto</span>
-      </div>
-
-      <!-- Carta activa -->
-      <div class="carta-activa" id="carta" onclick="cardClick()">
-        <div class="dorso">
+    <!-- Wrapper solo para las cartas -->
+    <div class="cards-wrapper">
+      <div class="mazo-container">
+        <!-- Dorso del mazo -->
+        <div class="mazo-back" id="mazoBack">
           <span class="dorso-texto">Amigos del Orto</span>
         </div>
-        <div class="contenido" id="contenido-carta">
-          <div class="categoria" id="categoria-carta"></div>
-          <div class="texto" id="texto-carta"></div>
+
+        <!-- Carta activa -->
+        <div class="carta-activa" id="carta" onclick="cardClick()">
+          <div class="dorso">
+            <span class="dorso-texto">Amigos del Orto</span>
+          </div>
+          <div class="contenido" id="contenido-carta">
+            <div class="categoria" id="categoria-carta"></div>
+            <div class="texto" id="texto-carta"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -46,5 +49,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
